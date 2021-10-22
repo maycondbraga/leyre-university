@@ -1,23 +1,31 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Leyre.University.Business.Interfaces;
 using System.Threading.Tasks;
+using Leyre.University.Dto.Dtos;
 using Leyre.University.Model.Entities;
+using AutoMapper;
+using System.Linq;
 
 namespace Leyre.University.Web.Controllers
 {
     public class StudentsController : Controller
     {
         private readonly IStudentService studentService;
+        private readonly IMapper mapper;
 
-        public StudentsController(IStudentService studentService)
+        public StudentsController(IStudentService studentService, IMapper mapper)
         {
             this.studentService = studentService;
+            this.mapper = mapper;
         }
 
         // GET: Students
         public async Task<IActionResult> Index()
         {
-            var listStudents = await studentService.GetAll();
+            var dataStudents = await studentService.GetAll();
+
+            var listStudents = dataStudents.Select(x => mapper.Map<StudentDto>(x)).ToList();
+
             return View(listStudents);
         }
 
@@ -29,16 +37,18 @@ namespace Leyre.University.Web.Controllers
 
         // POST: Students/Create
         [HttpPost]
-        public async Task<IActionResult> Create(StudentModel student)
+        public async Task<IActionResult> Create(StudentDto studentDto)
         {
             if (ModelState.IsValid)
             {
-                student = await studentService.Insert(student);
+                var studentModel = mapper.Map<StudentModel>(studentDto);
+
+                await studentService.Insert(studentModel);
 
                 return RedirectToAction("Index");
             }
 
-            return View(student);
+            return View(studentDto);
         }
 
         // GET: Students/Edit/5
@@ -49,28 +59,32 @@ namespace Leyre.University.Web.Controllers
                 NotFound();
             }
 
-            var student = await studentService.GetById(id.Value);
+            var studentModel = await studentService.GetById(id.Value);
 
-            if (student == null)
+            if (studentModel == null)
             {
                 NotFound();
             }
 
-            return View(student);
+            var studentDto = mapper.Map<StudentDto>(studentModel);
+
+            return View(studentDto);
         }
 
         // POST: Students/Edit/5
         [HttpPost]
-        public async Task<IActionResult> Edit(StudentModel student)
+        public async Task<IActionResult> Edit(StudentDto studentDto)
         {
             if (ModelState.IsValid)
             {
-                student = await studentService.Update(student);
+                var studentModel = mapper.Map<StudentModel>(studentDto);
+
+                await studentService.Update(studentModel);
 
                 return RedirectToAction("Index");
             }
 
-            return View(student);
+            return View(studentDto);
         }
 
         // GET: Students/Details/5
@@ -81,14 +95,16 @@ namespace Leyre.University.Web.Controllers
                 return NotFound();
             }
 
-            var student = await studentService.GetById(id.Value);
+            var studentModel = await studentService.GetById(id.Value);
 
-            if (student == null)
+            if (studentModel == null)
             {
-                return NotFound();
+                NotFound();
             }
 
-            return View(student);
+            var studentDto = mapper.Map<StudentDto>(studentModel);
+
+            return View(studentDto);
         }
 
         // GET: Students/Delete/5
@@ -98,15 +114,17 @@ namespace Leyre.University.Web.Controllers
             {
                 return NotFound();
             }
-            
-            var student = await studentService.GetById(id.Value);
 
-            if (student == null)
+            var studentModel = await studentService.GetById(id.Value);
+
+            if (studentModel == null)
             {
-                return NotFound();
+                NotFound();
             }
 
-            return View(student);
+            var studentDto = mapper.Map<StudentDto>(studentModel);
+
+            return View(studentDto);
         }
 
         // POST: Students/Delete/5

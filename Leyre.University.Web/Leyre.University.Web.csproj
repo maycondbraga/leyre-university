@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Leyre.University.Business\Leyre.University.Business.csproj" />
+    <ProjectReference Include="..\Leyre.University.Dto\Leyre.University.Dto.csproj" />
     <ProjectReference Include="..\Leyre.University.Repository\Leyre.University.Repository.csproj" />
   </ItemGroup>
 

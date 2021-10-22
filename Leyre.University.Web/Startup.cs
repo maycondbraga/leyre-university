@@ -9,6 +9,7 @@ using Leyre.University.Business.Interfaces;
 using Leyre.University.Business.Rules;
 using Leyre.University.Repository.Interfaces;
 using Leyre.University.Repository.Repositories;
+using System;
 
 namespace Leyre.University.Web
 {
@@ -32,6 +33,9 @@ namespace Leyre.University.Web
 
             //Business
             services.AddScoped<IStudentService, StudentService>();
+
+            // AutoMapper
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
