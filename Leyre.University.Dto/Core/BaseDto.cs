@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Leyre.University.Dto.Core
+﻿namespace Leyre.University.Dto.Core
 {
     /// <summary>
     /// Basic model Dto for entities
@@ -14,6 +8,6 @@ namespace Leyre.University.Dto.Core
         /// <summary>
         /// Id for entity
         /// </summary>
-        public int Id { get; set; }
+        public virtual int Id { get; set; }
     }
 }

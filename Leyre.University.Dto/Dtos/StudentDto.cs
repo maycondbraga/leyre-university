@@ -11,6 +11,12 @@ namespace Leyre.University.Dto.Dtos
     public class StudentDto : BaseDto
     {
         /// <summary>
+        /// Student Id
+        /// </summary>
+        [Display(Name = "Student Id")]
+        public new int Id { get; set; }
+
+        /// <summary>
         /// First name
         /// </summary>
         [Required(ErrorMessage = "The Fist Name is required")]

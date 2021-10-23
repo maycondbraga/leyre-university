@@ -1,13 +1,16 @@
 ﻿@model IEnumerable<Leyre.University.Dto.Dtos.EnrollmentDto>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Enrollments";
 }
 
-<h1>Index</h1>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h1 class="display-4">@ViewData["Title"]</h1>
+
+<a asp-action="Create">
+    <input type="submit" value="Create New" class="btn btn-success" />
+    <br /><br />
+</a>
+
 <table class="table">
     <thead>
         <tr>

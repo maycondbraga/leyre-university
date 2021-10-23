@@ -7,6 +7,12 @@ namespace Leyre.University.Dto.Dtos
     public class CourseDto : BaseDto
     {
         /// <summary>
+        /// Course Id
+        /// </summary>
+        [Display(Name = "Course Id")]
+        public new string Id { get; set; }
+
+        /// <summary>
         /// Course title
         /// </summary>
         [Required(ErrorMessage = "The Title is required")]
