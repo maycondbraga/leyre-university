@@ -13,6 +13,12 @@ namespace Leyre.University.Web.Mappings
         {
             CreateMap<StudentDto, StudentModel>();
             CreateMap<StudentModel, StudentDto>();
+
+            CreateMap<EnrollmentDto, EnrollmentModel>();
+            CreateMap<EnrollmentModel, EnrollmentDto>();
+
+            CreateMap<CourseDto, CourseModel>();
+            CreateMap<CourseModel, CourseDto>();
         }
     }
 }

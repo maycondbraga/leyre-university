@@ -1,6 +1,7 @@
 ﻿using System;
 using Leyre.University.Dto.Core;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace Leyre.University.Dto.Dtos
 {
@@ -29,5 +30,14 @@ namespace Leyre.University.Dto.Dtos
         [Required(ErrorMessage = "The Enrollment Date is required")]
         [Display(Name = "Enrollment Date")]
         public DateTime EnrollmentDate { get; set; }
+
+        /// <summary>
+        /// EnrollmentDto entity
+        /// </summary>
+        [Display(Name = "Enrollments")]
+        public ICollection<EnrollmentDto> Enrollments { get; set; }
+
+        [Display(Name = "Full Name")]
+        public string FullName { get { return FirstMidName + " " + LastName; } }
     }
 }

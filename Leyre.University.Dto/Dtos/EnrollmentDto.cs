@@ -1,36 +1,39 @@
-﻿using Leyre.University.Model.Core;
+﻿using Leyre.University.Dto.Core;
 using Leyre.University.Model.Enums;
+using System.ComponentModel.DataAnnotations;
 
-namespace Leyre.University.Model.Entities
+namespace Leyre.University.Dto.Dtos
 {
-    /// <summary>
-    /// Enrollment entity
-    /// </summary>
-    public class EnrollmentModel : BaseModel
+    public class EnrollmentDto : BaseDto
     {
         /// <summary>
         /// Course identifier
         /// </summary>
+        [Required(ErrorMessage = "The Course id is required")]
+        [Display(Name = "Course Id")]
         public int CourseId { get; set; }
 
         /// <summary>
         /// Student identifier
         /// </summary>
+        [Required(ErrorMessage = "The Student id is required")]
+        [Display(Name = "Student Id")]
         public int StudentId { get; set; }
 
         /// <summary>
         /// Grade
         /// </summary>
+        [Display(Name = "Grade")]
         public Grade? Grade { get; set; }
 
         /// <summary>
         /// Course identifier
         /// </summary>
-        public CourseModel Course { get; set; }
+        public CourseDto Course { get; set; }
 
         /// <summary>
         /// Student entity
         /// </summary>
-        public StudentModel Student { get; set; }
+        public StudentDto Student { get; set; }
     }
 }

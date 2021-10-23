@@ -30,9 +30,13 @@ namespace Leyre.University.Web
 
             //Repositories
             services.AddScoped<IStudentRepository, StudentRepository>();
+            services.AddScoped<ICourseRepository, CourseRepository>();
+            services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
 
             //Business
-            services.AddScoped<IStudentService, StudentService>();
+            services.AddScoped<IStudentBusiness, StudentBusiness>();
+            services.AddScoped<ICourseBusiness, CourseBusiness>();
+            services.AddScoped<IEnrollmentBusiness, EnrollmentBusiness>();
 
             // AutoMapper
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

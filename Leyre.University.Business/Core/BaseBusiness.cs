@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace Leyre.University.Business.Core
 {
-    public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : class
+    public class BaseBusiness<TEntity> : IBaseBusiness<TEntity> where TEntity : class
     {
         private IBaseRepository<TEntity> baseRepository;
 
-        public BaseService(IBaseRepository<TEntity> baseRepository)
+        public BaseBusiness(IBaseRepository<TEntity> baseRepository)
         {
             this.baseRepository = baseRepository;
         }

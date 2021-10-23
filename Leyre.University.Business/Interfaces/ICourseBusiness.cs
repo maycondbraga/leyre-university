@@ -2,7 +2,7 @@
 
 namespace Leyre.University.Business.Interfaces
 {
-    public interface IStudentService : IBaseService<StudentModel>
+    public interface ICourseBusiness : IBaseBusiness<CourseModel>
     {
     }
 }

@@ -22,7 +22,7 @@ namespace Leyre.University.Repository.Mappings
 
             builder.Property(t => t.CourseId).HasColumnName("ID_COURSE");
             builder.Property(t => t.StudentId).HasColumnName("ID_STUDENT");
-            builder.Property(t => t.Grade).HasColumnName("DS_GRADE");
+            builder.Property(t => t.Grade).HasColumnName("DS_GRADE").HasColumnType("char");
         }
     }
 }

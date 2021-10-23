@@ -10,21 +10,26 @@ namespace Leyre.University.Web.Controllers
 {
     public class StudentsController : Controller
     {
-        private readonly IStudentService studentService;
+        private readonly IStudentBusiness studentBusiness;
         private readonly IMapper mapper;
 
-        public StudentsController(IStudentService studentService, IMapper mapper)
+        public StudentsController(IStudentBusiness studentBusiness, IMapper mapper)
         {
-            this.studentService = studentService;
+            this.studentBusiness = studentBusiness;
             this.mapper = mapper;
         }
 
         // GET: Students
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            var dataStudents = await studentService.GetAll();
+            var dataStudents = await studentBusiness.GetAll();
 
             var listStudents = dataStudents.Select(x => mapper.Map<StudentDto>(x)).ToList();
+
+            if (id != null)
+            {
+                ViewBag.Courses = await studentBusiness.GetCoursesByStudentId(id.Value);
+            }
 
             return View(listStudents);
         }
@@ -43,7 +48,7 @@ namespace Leyre.University.Web.Controllers
             {
                 var studentModel = mapper.Map<StudentModel>(studentDto);
 
-                await studentService.Insert(studentModel);
+                await studentBusiness.Insert(studentModel);
 
                 return RedirectToAction("Index");
             }
@@ -59,7 +64,7 @@ namespace Leyre.University.Web.Controllers
                 NotFound();
             }
 
-            var studentModel = await studentService.GetById(id.Value);
+            var studentModel = await studentBusiness.GetById(id.Value);
 
             if (studentModel == null)
             {
@@ -79,7 +84,7 @@ namespace Leyre.University.Web.Controllers
             {
                 var studentModel = mapper.Map<StudentModel>(studentDto);
 
-                await studentService.Update(studentModel);
+                await studentBusiness.Update(studentModel);
 
                 return RedirectToAction("Index");
             }
@@ -95,7 +100,7 @@ namespace Leyre.University.Web.Controllers
                 return NotFound();
             }
 
-            var studentModel = await studentService.GetById(id.Value);
+            var studentModel = await studentBusiness.GetById(id.Value);
 
             if (studentModel == null)
             {
@@ -115,7 +120,7 @@ namespace Leyre.University.Web.Controllers
                 return NotFound();
             }
 
-            var studentModel = await studentService.GetById(id.Value);
+            var studentModel = await studentBusiness.GetById(id.Value);
 
             if (studentModel == null)
             {
@@ -131,7 +136,7 @@ namespace Leyre.University.Web.Controllers
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await studentService.Delete(id);
+            await studentBusiness.Delete(id);
 
             return RedirectToAction("Index");
         }

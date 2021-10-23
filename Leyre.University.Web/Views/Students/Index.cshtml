@@ -37,6 +37,7 @@
                 @Html.DisplayFor(modelItem => item.EnrollmentDate)
             </td>
             <td>
+                <a asp-action="Index" asp-route-id="@item.Id">Select</a> |
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
@@ -45,3 +46,27 @@
 }
     </tbody>
 </table>
+
+@if (ViewBag.Courses != null)
+{
+
+    var listCourses = (IEnumerable<Leyre.University.Model.Entities.CourseModel>)ViewBag.Courses;
+
+    <h3>
+        Courses Enrolled in Selected Student
+    </h3>
+    <table class="table">
+        <tr>
+            <th>Name</th>
+        </tr>
+
+        @foreach (var item in listCourses)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+            </tr>
+        }
+    </table>
+}

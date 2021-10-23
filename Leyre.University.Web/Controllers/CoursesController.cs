@@ -1,28 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
+using Leyre.University.Business.Interfaces;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+using Leyre.University.Dto.Dtos;
 using Leyre.University.Model.Entities;
-using Leyre.University.Repository.Contexts;
+using AutoMapper;
+using System.Linq;
 
 namespace Leyre.University.Web.Controllers
 {
     public class CoursesController : Controller
     {
-        private readonly UniversityContext _context;
+        private readonly ICourseBusiness courseBusiness;
+        private readonly IMapper mapper;
 
-        public CoursesController(UniversityContext context)
+        public CoursesController(ICourseBusiness courseBusiness, IMapper mapper)
         {
-            _context = context;
+            this.courseBusiness = courseBusiness;
+            this.mapper = mapper;
         }
 
         // GET: Courses
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Courses.ToListAsync());
+            var dataCourses = await courseBusiness.GetAll();
+
+            var listCourses = dataCourses.Select(x => mapper.Map<CourseDto>(x)).ToList();
+
+            return View(listCourses);
         }
 
         // GET: Courses/Details/5
@@ -33,14 +37,16 @@ namespace Leyre.University.Web.Controllers
                 return NotFound();
             }
 
-            var courseModel = await _context.Courses
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var courseModel = await courseBusiness.GetById(id.Value);
+
             if (courseModel == null)
             {
                 return NotFound();
             }
 
-            return View(courseModel);
+            var courseDto = mapper.Map<CourseDto>(courseModel);
+
+            return View(courseDto);
         }
 
         // GET: Courses/Create
@@ -54,15 +60,18 @@ namespace Leyre.University.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Credits,Id")] CourseModel courseModel)
+        public async Task<IActionResult> Create([Bind("Title,Credits,Id")] CourseDto courseDto)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(courseModel);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var courseModel = mapper.Map<CourseModel>(courseDto);
+
+                await courseBusiness.Insert(courseModel);
+
+                return RedirectToAction("Index");
             }
-            return View(courseModel);
+
+            return View(courseDto);
         }
 
         // GET: Courses/Edit/5
@@ -73,12 +82,16 @@ namespace Leyre.University.Web.Controllers
                 return NotFound();
             }
 
-            var courseModel = await _context.Courses.FindAsync(id);
+            var courseModel = await courseBusiness.GetById(id.Value);
+
             if (courseModel == null)
             {
                 return NotFound();
             }
-            return View(courseModel);
+
+            var courseDto = mapper.Map<CourseDto>(courseModel);
+
+            return View(courseDto);
         }
 
         // POST: Courses/Edit/5
@@ -86,34 +99,18 @@ namespace Leyre.University.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Title,Credits,Id")] CourseModel courseModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Title,Credits,Id")] CourseDto courseDto)
         {
-            if (id != courseModel.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(courseModel);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CourseModelExists(courseModel.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                var courseModel = mapper.Map<CourseModel>(courseDto);
+
+                await courseBusiness.Update(courseModel);
+
+                return RedirectToAction("Index");
             }
-            return View(courseModel);
+
+            return View(courseDto);
         }
 
         // GET: Courses/Delete/5
@@ -124,14 +121,16 @@ namespace Leyre.University.Web.Controllers
                 return NotFound();
             }
 
-            var courseModel = await _context.Courses
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var courseModel = await courseBusiness.GetById(id.Value);
+
             if (courseModel == null)
             {
-                return NotFound();
+                NotFound();
             }
 
-            return View(courseModel);
+            var courseDto = mapper.Map<CourseDto>(courseModel);
+
+            return View(courseDto);
         }
 
         // POST: Courses/Delete/5
@@ -139,15 +138,9 @@ namespace Leyre.University.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var courseModel = await _context.Courses.FindAsync(id);
-            _context.Courses.Remove(courseModel);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+            await courseBusiness.Delete(id);
 
-        private bool CourseModelExists(int id)
-        {
-            return _context.Courses.Any(e => e.Id == id);
+            return RedirectToAction("Index");
         }
     }
 }
