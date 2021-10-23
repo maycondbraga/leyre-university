@@ -115,6 +115,15 @@ namespace Leyre.University.Web.Controllers
         // GET: Students/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (TempData["idStudentEnrolled"] != null)
+            {
+                ViewBag.Message = "Student enrolled in a course";
+
+                id = (int) TempData["idStudentEnrolled"];
+
+                TempData.Remove("idStudentEnrolled");
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -140,10 +149,8 @@ namespace Leyre.University.Web.Controllers
 
             if (!enrolled)
             {
-                ViewBag.Message = "Student enrolled in a course";
-                return View();
-                //return new ContentResult() { Content = "<script language='javascript' type='text/javascript'>alert('Student enrolled in a course');</script>" };
-                //return Content("<script language='javascript' type='text/javascript'>alert('Student enrolled in a course');</script>");
+                TempData["idStudentEnrolled"] = id;
+                return RedirectToAction("Delete");
             }
 
             return RedirectToAction("Index");
