@@ -1,5 +1,6 @@
 ﻿using Leyre.University.Model.Entities;
 using Leyre.University.Repository.Mappings;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Leyre.University.Repository.Contexts
@@ -7,7 +8,7 @@ namespace Leyre.University.Repository.Contexts
     /// <summary>
     /// Context for Database
     /// </summary>
-    public class UniversityContext : DbContext
+    public class UniversityContext : IdentityDbContext
     {
         public UniversityContext(DbContextOptions<UniversityContext> options) : base(options)
         {

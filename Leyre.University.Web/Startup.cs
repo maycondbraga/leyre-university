@@ -10,6 +10,7 @@ using Leyre.University.Business.Rules;
 using Leyre.University.Repository.Interfaces;
 using Leyre.University.Repository.Repositories;
 using System;
+using Microsoft.AspNetCore.Identity;
 
 namespace Leyre.University.Web
 {
@@ -40,6 +41,9 @@ namespace Leyre.University.Web
 
             // AutoMapper
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            // Add Authentication
+            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<UniversityContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +63,8 @@ namespace Leyre.University.Web
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
