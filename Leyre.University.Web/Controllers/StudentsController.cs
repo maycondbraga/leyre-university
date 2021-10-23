@@ -136,7 +136,15 @@ namespace Leyre.University.Web.Controllers
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await studentBusiness.Delete(id);
+            bool enrolled = await studentBusiness.Delete(id);
+
+            if (!enrolled)
+            {
+                ViewBag.Message = "Student enrolled in a course";
+                return View();
+                //return new ContentResult() { Content = "<script language='javascript' type='text/javascript'>alert('Student enrolled in a course');</script>" };
+                //return Content("<script language='javascript' type='text/javascript'>alert('Student enrolled in a course');</script>");
+            }
 
             return RedirectToAction("Index");
         }

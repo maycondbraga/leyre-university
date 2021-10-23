@@ -16,6 +16,11 @@ namespace Leyre.University.Business.Rules
             this.studentRepository = studentRepository;
         }
 
+        public new async Task<bool> Delete(int id)
+        {
+            return await studentRepository.Delete(id);
+        }
+
         public async Task<IEnumerable<CourseModel>> GetCoursesByStudentId(int id)
         {
             return await studentRepository.GetCoursesByStudentId(id);

@@ -31,7 +31,7 @@ namespace Leyre.University.Repository.Repositories
             return listCourses;
         }
 
-        public new async Task Delete(int id)
+        public new async Task<bool> Delete(int id)
         {
             var entity = await GetById(id);
 
@@ -41,10 +41,11 @@ namespace Leyre.University.Repository.Repositories
             var flag = universityContext.Enrollments.Any(x => x.StudentId == id);
 
             if (flag)
-                throw new Exception("The student have enrollments");
+                return false;
 
             universityContext.Students.Remove(entity);
             await universityContext.SaveChangesAsync();
+            return true;
         }
     }
 }
