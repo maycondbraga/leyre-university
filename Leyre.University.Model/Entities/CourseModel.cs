@@ -1,5 +1,6 @@
 ﻿using Leyre.University.Model.Core;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Leyre.University.Model.Entities
 {
@@ -8,6 +9,12 @@ namespace Leyre.University.Model.Entities
     /// </summary>
     public class CourseModel : BaseModel
     {
+        /// <summary>
+        /// Id for entity
+        /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public new int Id { get; set; }
+
         /// <summary>
         /// Course title
         /// </summary>

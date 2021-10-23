@@ -10,6 +10,6 @@ namespace Leyre.University.Model.Core
         /// <summary>
         /// Id for entity
         /// </summary>
-        public int Id { get; set; }
+        public virtual int Id { get; set; }
     }
 }
